@@ -1,0 +1,11 @@
+<%- include('../shared/head.ejs') %>    
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+
+<body>
+  <%- include('../shared/navigation.ejs') %>  
+  <main>
+    <h1 class="page-title">All Products <span>(<%= prods.length %>)</span></h1>
+    <%- include('../shared/product.ejs') %>
+  </main>
+<%- include('../shared/end.ejs') %>  

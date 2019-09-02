@@ -1,0 +1,24 @@
+<header>
+  <nav>
+    <ul class="header-list">
+      <li class="<%= path == '/shop' ? 'active' : '' %>">
+        <a href="/">Shop</a>
+      </li>
+      <li class="<%= path == '/shop/product-list' ? 'active' : '' %>">
+        <a href="/shop/product-list">Products</a>
+      </li>
+      <li class="<%= path == '/shop/cart' ? 'active' : '' %>">
+        <a href="/shop/cart">Cart</a>
+      </li>
+      <li class="<%= path == '/shop/checkout' ? 'active' : '' %>">
+        <a href="/shop/checkout">Checkout</a>
+      </li>
+      <li class="<%= path == '/admin/add-product' ? 'active' : '' %>">
+        <a href="/admin/add-product">Add Product</a>
+      </li>
+      <li class="<%= path == '/admin/products' ? 'active' : '' %>">
+        <a href="/admin/products">Admin Products</a>
+      </li>
+    </ul>
+  </nav>
+</header>
