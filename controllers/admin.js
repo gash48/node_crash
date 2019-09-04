@@ -16,10 +16,37 @@ const saveProductRequest = (req, res, next) => {
   res.redirect(shopRoutes.index.route);
 };
 
+const deleteProductRequest = (req, res, next) => {
+  const productId = req.params.productId;
+  Product.deleteById(productId, err => {
+    if (err) {
+      console.log("Error in deleting product");
+    } else {
+      console.log("Product with id " + productId + " deleted.");
+      res.redirect(adminRoutes.products.route);
+    }
+  });
+};
+
+// const editProductPage = (req, res, next) => {
+//   res.render(adminRoutes.editProduct.view, {
+//     pageTitle: adminRoutes.editProduct.name,
+//     path: adminRoutes.editProduct.route
+//   });
+// };
+
 const editProductPage = (req, res, next) => {
-  res.render(adminRoutes.editProduct.view, {
-    pageTitle: adminRoutes.editProduct.name,
-    path: adminRoutes.editProduct.route
+  Product.fetchById(req.params.productId, product => {
+    console.log(product);
+    if (product) {
+      res.render(adminRoutes.editProduct.view, {
+        pageTitle: adminRoutes.editProduct.name,
+        path: adminRoutes.editProduct.route,
+        product
+      });
+    } else {
+      res.redirect(errorRoutes.notFound.route);
+    }
   });
 };
 
@@ -37,5 +64,6 @@ module.exports = {
   addProductPage,
   saveProductRequest,
   editProductPage,
-  allProductsPage
+  allProductsPage,
+  deleteProductRequest
 };

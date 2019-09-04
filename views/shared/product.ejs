@@ -11,8 +11,8 @@
             <h5 class="desc"><%= p.desc %></h1>
           </div>
           <div class="button-group">
-            <button onclick="event.stopPropagation(); alert('Id To Edit '+'<%= p.id %>')">Edit</button>
-            <button onclick="event.stopPropagation(); alert('Id To Delete '+'<%= p.id %>')">Delete</button>
+            <button onclick="event.stopPropagation(); window.location.href = '/admin/edit-product/<%= p.id %>'">Edit</button>
+            <button onclick="event.stopPropagation(); window.location.href = '/admin/delete-product/<%= p.id %>'">Delete</button>
           </div>
         </div>
       <% } %>    

@@ -51,6 +51,22 @@ class Product {
       cb(products.find(prod => prod.id == id));
     });
   }
+
+  static deleteById(id, cb) {
+    fs.readFile(filePath, function(err, data) {
+      if (err) {
+        cb(err);
+      }
+      const products = dataParser
+        .isJsonString(data)
+        .filter(prod => prod.id != id);
+      const saveData = JSON.stringify(products);
+      fs.writeFile(filePath, saveData, err => {
+        cb(err);
+        err ? console.log(err) : null;
+      });
+    });
+  }
 }
 
 module.exports = Product;

@@ -30,9 +30,13 @@ module.exports = {
       view: "admin/add-product"
     },
     editProduct: {
-      route: "/admin/edit-product",
+      route: "/admin/edit-product/:productId",
       name: "Edit Product",
       view: "admin/edit-product"
+    },
+    deleteProduct: {
+      route: "/admin/delete-product/:productId",
+      name: "Delete Product"
     }
   },
   error: {
