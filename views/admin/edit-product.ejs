@@ -5,7 +5,7 @@
 <body>
   <%- include('../shared/navigation.ejs') %>
   <main>
-    <form action="/admin/edit-product" method="POST">
+    <form action="/admin/edit-product/<%= productId %>" method="POST">
       <div class="form-wrapper">
         <div class="field-wrapper">
           <label for="title">Title *</label>
@@ -21,8 +21,7 @@
         </div>
         <div class="field-wrapper">
           <label for="desc">Description</label>
-          <textarea name="desc" class="input-field" rows="10" value="<%= product.desc %>"
-            cols="50"></textarea>
+          <textarea name="desc" class="input-field" rows="10" cols="50"><%= product.desc %></textarea>
         </div>
         <button class="submit-btn">
           Submit Form

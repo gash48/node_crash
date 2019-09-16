@@ -1,22 +1,36 @@
 <div class="page-content">
-    <% if(prods.length > 0) { %>
-      <% for(let p of prods) { %>
-        <div class="product-cards" onclick="window.location.href = '/shop/product-detail/<%= p.id %>'">
-          <div class="image-block">
-            <img class="image" src="<%=p.image %>" alt="No Image">
-          </div>
-          <div class="info-block">
-            <h3 class="title"><%= p.title %></h1>
-            <h4 class="price">$<%= p.price %></h1>
-            <h5 class="desc"><%= p.desc %></h1>
-          </div>
-          <div class="button-group">
-            <button onclick="event.stopPropagation(); window.location.href = '/admin/edit-product/<%= p.id %>'">Edit</button>
-            <button onclick="event.stopPropagation(); window.location.href = '/admin/delete-product/<%= p.id %>'">Delete</button>
-          </div>
-        </div>
-      <% } %>    
+  <% if(prods.length > 0) { %>
+  <% for(let p of prods) { %>
+  <div class="product-cards"
+    onclick="window.location.href = '/shop/product-detail/<%= p.id %>'">
+    <div class="image-block">
+      <img class="image" src="<%=p.image %>" alt="No Image">
+    </div>
+    <div class="info-block">
+      <h3 class="title"><%= p.title %></h3>
+      <h4 class="price">$<%= p.price %></h4>
+      <h5 class="desc"><%= p.desc %></h5>
+    </div>
+    <% if(isAdmin) { %>
+    <div class="button-group">
+      <button
+        onclick="event.stopPropagation(); window.location.href = '/admin/edit-product/<%= p.id %>'">Edit</button>
+      <button
+        onclick="event.stopPropagation(); window.location.href = '/admin/delete-product/<%= p.id %>'">Delete</button>
+    </div>
     <% } else { %>
-      <h1>No Products in List</h1>
+    <div class="button-group">
+      <!-- <form action="/shop/cart?update=true&count=1&id=<%= p.id %>" method="POST"> -->
+      <!-- <input type="hidden" name="productId" value="<%= p.id %>"> -->
+      <button
+        onclick="event.stopPropagation(); window.location.href = '/shop/cart?update=true&count=1&id=<%= p.id %>'">Add
+        To Cart</button>
+      <!-- </form> -->
+    </div>
     <% } %>
+  </div>
+  <% } %>
+  <% } else { %>
+  <h1>No Products in List</h1>
+  <% } %>
 </div>

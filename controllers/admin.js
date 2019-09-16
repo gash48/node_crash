@@ -1,8 +1,10 @@
 const Product = require("../models/product");
 const {
   admin: adminRoutes,
-  shop: shopRoutes
+  shop: shopRoutes,
+  error: errorRoutes
 } = require("../constants/app-routes");
+const CachedProducts = require("../data/products.js");
 
 const addProductPage = (req, res, next) => {
   res.render(adminRoutes.addProduct.view, {
@@ -14,6 +16,15 @@ const addProductPage = (req, res, next) => {
 const saveProductRequest = (req, res, next) => {
   new Product(req.body).save();
   res.redirect(shopRoutes.index.route);
+};
+
+const editProductRequest = (req, res, next) => {
+  Product.edit({ id: req.params.productId, ...req.body }, success => {
+    if (success) {
+      console.log(CachedProducts.products)
+      res.redirect(adminRoutes.products.route);
+    }
+  });
 };
 
 const deleteProductRequest = (req, res, next) => {
@@ -28,21 +39,14 @@ const deleteProductRequest = (req, res, next) => {
   });
 };
 
-// const editProductPage = (req, res, next) => {
-//   res.render(adminRoutes.editProduct.view, {
-//     pageTitle: adminRoutes.editProduct.name,
-//     path: adminRoutes.editProduct.route
-//   });
-// };
-
 const editProductPage = (req, res, next) => {
   Product.fetchById(req.params.productId, product => {
-    console.log(product);
     if (product) {
       res.render(adminRoutes.editProduct.view, {
         pageTitle: adminRoutes.editProduct.name,
         path: adminRoutes.editProduct.route,
-        product
+        product,
+        productId: product.id
       });
     } else {
       res.redirect(errorRoutes.notFound.route);
@@ -55,6 +59,7 @@ const allProductsPage = (req, res, next) => {
     res.render(adminRoutes.products.view, {
       pageTitle: adminRoutes.products.name,
       path: adminRoutes.products.route,
+      isAdmin: true,
       prods: products
     });
   });
@@ -65,5 +70,6 @@ module.exports = {
   saveProductRequest,
   editProductPage,
   allProductsPage,
-  deleteProductRequest
+  deleteProductRequest,
+  editProductRequest
 };

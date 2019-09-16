@@ -1,4 +1,5 @@
 const Product = require("../models/product");
+const Cart = require("../models/cart");
 const {
   shop: shopRoutes,
   error: errorRoutes
@@ -13,6 +14,7 @@ const shopIndexPage = (req, res, next) => {
     res.render(shopRoutes.index.view, {
       pageTitle: shopRoutes.index.name,
       prods: products,
+      isAdmin: false,
       path: shopRoutes.index.route
     });
   });
@@ -23,6 +25,7 @@ const productListPage = (req, res, next) => {
     res.render(shopRoutes.products.view, {
       pageTitle: shopRoutes.products.name,
       prods: products,
+      isAdmin: false,
       path: shopRoutes.products.route
     });
   });
@@ -43,10 +46,28 @@ const productDetailPage = (req, res, next) => {
 };
 
 const cartPage = (req, res, next) => {
-  res.render(shopRoutes.cart.view, {
-    pageTitle: shopRoutes.cart.name,
-    path: shopRoutes.cart.route
-  });
+  const { id, count } = req.query;
+  if (id) {
+    Cart.updateMyCart(id, count, success => {
+      if (success) {
+        Cart.fetchMyCart(data => {
+          res.render(shopRoutes.cart.view, {
+            pageTitle: shopRoutes.cart.name,
+            path: shopRoutes.cart.route,
+            myCart: data
+          });
+        });
+      }
+    });
+  } else {
+    Cart.fetchMyCart(data => {
+      res.render(shopRoutes.cart.view, {
+        pageTitle: shopRoutes.cart.name,
+        path: shopRoutes.cart.route,
+        myCart: data
+      });
+    });
+  }
 };
 
 const checkoutPage = (req, res, next) => {

@@ -1,6 +1,7 @@
 const fs = require("fs");
 const dataParser = require("../util/data-parser");
 const fp = require("../util/paths");
+const cachedProducts = require("../data/products.js");
 const filePath = fp("products.json");
 
 class Product {
@@ -19,7 +20,19 @@ class Product {
         !err ? [...dataParser.isJsonString(data), product] : [product]
       );
       fs.writeFile(filePath, saveData, err => {
+        cachedProducts.updateCachedProducts(saveData);
         err ? console.log(err) : null;
+      });
+    });
+  }
+
+  static edit(product, cb) {
+    fs.readFile(filePath, function(err, data) {
+      const parsedData = dataParser.isJsonString(data);
+      const newData = JSON.stringify(dataParser.updatedProducts(product, parsedData));
+      fs.writeFile(filePath, newData, err => {
+        cachedProducts.updateCachedProducts(newData);
+        cb(!err);        
       });
     });
   }
@@ -38,7 +51,9 @@ class Product {
       if (err) {
         cb([], err);
       }
-      cb(dataParser.isJsonString(data));
+      const parsedData = dataParser.isJsonString(data);
+      cachedProducts.updateCachedProducts(parsedData);
+      cb(parsedData);
     });
   }
 
@@ -63,6 +78,7 @@ class Product {
       const saveData = JSON.stringify(products);
       fs.writeFile(filePath, saveData, err => {
         cb(err);
+        cachedProducts.updateCachedProducts(saveData);
         err ? console.log(err) : null;
       });
     });
